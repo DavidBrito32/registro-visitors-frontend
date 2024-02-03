@@ -10,8 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.6.7",
+    "json-server": "^1.0.0-alpha.23",
+    "primeface": "^0.0.1-security",
+    "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
+    "primereact": "^10.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.50.0",
+    "react-pdf": "^7.7.0",
+    "react-pdf-html": "^1.2.0",
+    "react-router-dom": "^6.22.0",
+    "recharts": "^2.11.0",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
