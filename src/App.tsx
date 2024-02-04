@@ -1,9 +1,11 @@
+import Ways from "./routes/router";
+
 const App = (): JSX.Element => {
-    return (
-      <>
-          
-      </>
-    );
+  return (
+    <>
+        <Ways />
+    </>
+  );
 };
 
 export default App;
