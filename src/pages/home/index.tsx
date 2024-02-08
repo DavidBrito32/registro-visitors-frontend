@@ -35,7 +35,7 @@ const HomePage = (): JSX.Element => {
   console.log(errors);
 
   const [modal, setModal] = useState<boolean>(false);
-  const [error] = useState<string>("");
+  const [error] = useState<string>("USUARIO JA REGISTRADO");
 
   const toogleModal = (): void => setModal(!modal);
 
@@ -47,7 +47,7 @@ const HomePage = (): JSX.Element => {
 
   return (
     <>
-      <Main>
+      <Main className="mt-5">
         <Form>
           <Title>Seja bem vindo(a) visitante</Title>
           <Label $w="100%">
@@ -134,17 +134,32 @@ const HomePage = (): JSX.Element => {
           </Label>
           <Label $w="45%">
             <Text>Cidade</Text>
-            <Select>
-              <option>Informe sua cidade:</option>
-              <option>Fortaleza</option>
-            </Select>
+            <InputMask
+              className="w-full h-3rem border-transparent border-round-lg text-sm transition-duration-200 pl-3 focus:border-purple-500"
+              mask="99.999-999"
+              placeholder="Informe seu CEP"
+              {...register("cidade", {
+                required: true,
+              })}
+            />
           </Label>
           <Label $w="45%">
             <Text>Bairro</Text>
-            <Select>
-              <option>Informe seu bairro:</option>
+            {/*@ts-ignore */}
+            <Select
+              {...register("bairro", {
+                required: true,
+              })}
+            >
+              <option value={""}>Informe seu bairro:</option>
               <option>Fortaleza</option>
             </Select>
+
+            {errors?.bairro?.type === "required" && (
+              <p className="text-xl p-2 bg-red-300 border-round-xs text-white">
+                Informe seu bairro
+              </p>
+            )}
           </Label>
           <Button
             className="w-full h-3rem border-round-lg flex justify-content-center align-items-center text-xl font-bold bg-indigo-700 text-cyan-50 border-none hover:bg-indigo-800"
@@ -159,7 +174,9 @@ const HomePage = (): JSX.Element => {
       <Overlay onClick={toogleModal} className={modal ? "active" : ""}>
         <Modal>
           {error ? (
-            <><Title $color="black">{error}</Title></>
+            <>
+              <p className="text-2xl text-red-500 font-bold">{error}</p>
+            </>
           ) : (
             <>
               <Title $color="black">Cadastro Concluido</Title>
