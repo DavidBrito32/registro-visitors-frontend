@@ -2,20 +2,13 @@ import { Button } from "primereact/button";
 import {
   Box,
   Input,
-  TBody,
-  Table,
-  Td,
-  Th,
-  Thead,
   Title,
-  Tr,
   WrapContainer,
 } from "../../../styles/styles";
 import { FaPlus, FaSearch } from "react-icons/fa";
-import { IoCloseCircleSharp, IoNewspaperSharp } from "react-icons/io5";
-import { BsPencilSquare } from "react-icons/bs";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { IoCloseCircleSharp } from "react-icons/io5";
 import { useState } from "react";
+import DataTable from "../../../components/data-table";
 
 interface Tflags {
   search: boolean;
@@ -28,6 +21,7 @@ const VisitorsPage = () => {
 
   const toogleSearch = (): void =>
     setFlags({ ...flags, search: !flags.search });
+    const header: Array<string> = ["Nome", "CPF", "Cidade", "Estado"];
   return (
     <>
       <WrapContainer>
@@ -88,49 +82,7 @@ const VisitorsPage = () => {
               </Box>
             )}
           </Box>
-          <Table $w="100%">
-            <Thead $h="28px">
-              <Tr $bg="#D9D9D9">
-                <Th scope="col">Nome</Th>
-                <Th scope="col">CPF</Th>
-                <Th scope="col">Cidade / Estado</Th>
-                <Th scope="col">Ações</Th>
-              </Tr>
-            </Thead>
-            <TBody $w="100%">
-              <Tr $h="28px">
-                <Td $weight="bold">{"Jõao Brito"}</Td>
-                <Td $weight="bold">{"000.000.000-42"}</Td>
-                <Td $weight="bold">{"Fortaleza"}</Td>
-                <Td
-                  $weight="bold"
-                  $display="flex"
-                  $justify="center"
-                  $gap="05px"
-                  $align="center"
-                >
-                  <Button
-                    icon={
-                      <IoNewspaperSharp className="text-black text-center w-12 h-auto" />
-                    }
-                    className="p-1 flex justify-content-center align-items-center text-base font-bold border-round-sm border-none bg-pink-400 hover:text-white hover:bg-pink-500 transition-duration-200"
-                  />
-                  <Button
-                    icon={
-                      <BsPencilSquare className="text-black text-center w-12 h-auto" />
-                    }
-                    className="p-1 flex justify-content-center align-items-center text-base font-bold border-round-sm border-none bg-pink-400 hover:text-white hover:bg-pink-500 transition-duration-200"
-                  />
-                  <Button
-                    icon={
-                      <FaRegTrashCan className="text-black text-center w-12 h-auto" />
-                    }
-                    className="p-1 flex justify-content-center align-items-center text-base font-bold border-round-sm border-none bg-pink-400 hover:text-white hover:bg-pink-500 transition-duration-200"
-                  />
-                </Td>
-              </Tr>
-            </TBody>
-          </Table>
+              <DataTable header={header} />
         </Box>
       </WrapContainer>
     </>

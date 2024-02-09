@@ -358,7 +358,7 @@ export const Tr = styled.tr<StyledProps>`
   margin-left: ${(props) => props.$ml || "0"};
   margin-right: ${(props) => props.$mr || "0"};
   margin-bottom: ${(props) => props.$mb || "0"};
-  background-color: ${(props) => props.$bg || ""};
+  background-color: ${(props) => props.$bg || "#D9D9D9"};
   font-size: ${(props) => props.$size || "16px"};
 `;
 
