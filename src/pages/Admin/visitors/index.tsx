@@ -48,7 +48,7 @@ const VisitorsPage = () => {
                   $h="35px"
                   $w="auto"
                   $border="2px solid black"
-                  placeHolder="Digite o CPF"
+                  placeholder="Digite o CPF"
                 />
                 <Button
                   icon={

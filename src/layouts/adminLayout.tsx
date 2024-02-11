@@ -1,4 +1,4 @@
-import { Outlet, useLocation, Link } from "react-router-dom";
+import { Outlet, useLocation, Link, useNavigate } from "react-router-dom";
 import {
   AutoContainer,
   FlexContainer,
@@ -15,6 +15,7 @@ import { FiUsers } from "react-icons/fi";
 import { SlBookOpen } from "react-icons/sl";
 
 const AdminLayout = (): JSX.Element => {
+  const navigate = useNavigate();
   const location = useLocation();
   return (
     <>
@@ -26,6 +27,7 @@ const AdminLayout = (): JSX.Element => {
           <Title $size="32px">DashBoard</Title>
           <ListMenu>
             <ListItem
+              onClick={() => navigate("/admin")}
               className={location.pathname === "/admin" ? "active" : ""}
             >
               <PiChartPieSliceFill className="text-white w-2rem h-auto" />
@@ -35,6 +37,7 @@ const AdminLayout = (): JSX.Element => {
             </ListItem>
             <ListItem
               className={location.pathname === "/admin/users" ? "active" : ""}
+              onClick={() => navigate("/admin/users")}
             >
               <FiUsers className="text-white w-2rem h-auto" />
               <Link
@@ -45,6 +48,7 @@ const AdminLayout = (): JSX.Element => {
               </Link>
             </ListItem>
             <ListItem
+              onClick={() => navigate("/admin/visitors")}
               className={
                 location.pathname === "/admin/visitors" ? "active" : ""
               }

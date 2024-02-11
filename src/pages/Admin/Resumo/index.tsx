@@ -56,9 +56,13 @@ const ResumoPage = () => {
             <Circle />
           </Box>
         </Grafic>
-        <Grafic></Grafic>
         <Grafic>
-        <Title $color="black" $size="16px" $align="left">
+          <Title $color="black" $size="16px" $align="left">
+            Total de Visitas
+          </Title>
+        </Grafic>
+        <Grafic>
+          <Title $color="black" $size="16px" $align="left">
             Visitantes por Gênero
           </Title>
           <Box $w="80%" $h="100%" $justify="space-between">

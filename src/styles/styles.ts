@@ -5,7 +5,7 @@ interface StyledProps {
   $w?: string | undefined;
   scope?: string | undefined;
   type?: string | undefined;
-  placeHolder?: string | undefined;
+  placeholder?: string | undefined;
   value?: string | number | boolean | undefined;
   onChange?: () => void | undefined;
   alt?: string | undefined;
@@ -177,7 +177,7 @@ export const Overlay = styled.div`
   backdrop-filter: blur(3px);
   visibility: hidden;
   opacity: 0;
-  transition-duration: 400ms;
+  transition-duration: 200ms;
 
   &.active {
     visibility: visible;

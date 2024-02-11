@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+/* @ts-ignore */
 import { Button } from "primereact/button";
 import {
   Form,
@@ -22,7 +23,7 @@ interface Register {
   genero: string;
   idade: number;
   cidade: string;
-  bairro: string;
+  estado: string;
 }
 
 const HomePage = (): JSX.Element => {
@@ -35,7 +36,7 @@ const HomePage = (): JSX.Element => {
   console.log(errors);
 
   const [modal, setModal] = useState<boolean>(false);
-  const [error] = useState<string>("USUARIO JA REGISTRADO");
+  const [error] = useState<string>("CADASTRO REALIZADO COM SUCESSO 💕");
 
   const toogleModal = (): void => setModal(!modal);
 
@@ -52,6 +53,7 @@ const HomePage = (): JSX.Element => {
           <Title>Seja bem vindo(a) visitante</Title>
           <Label $w="100%">
             <Text>Nome do visitante:</Text>
+            {/* @ts-ignore */}
             <Input
               type="text"
               placeholder="Digite seu nome completo"
@@ -83,6 +85,7 @@ const HomePage = (): JSX.Element => {
           </Label>
           <Label $w="100%">
             <Text>Profissão:</Text>
+            {/* @ts-ignore */}
             <Input
               placeholder="O que você faz?"
               {...register("profissao", {
@@ -119,6 +122,7 @@ const HomePage = (): JSX.Element => {
           </Label>
           <Label $w="45%">
             <Text>Idade</Text>
+            {/* @ts-ignore */}
             <Input
               type="number"
               placeholder="Informe sua idade"
@@ -132,34 +136,36 @@ const HomePage = (): JSX.Element => {
               </p>
             )}
           </Label>
+
+          <Label $w="45%">
+            <Text>Estado</Text>
+            {/* @ts-ignore */}
+            <Input
+              type="text"
+              maxLength={2}
+              placeholder="Informe sua estado"
+              {...register("estado", {
+                required: true,
+              })}
+            />
+
+            {errors?.estado?.type === "required" && (
+              <p className="text-xl p-2 bg-red-300 border-round-xs text-white">
+                Informe seu Estado
+              </p>
+            )}
+          </Label>
+
           <Label $w="45%">
             <Text>Cidade</Text>
-            <InputMask
-              className="w-full h-3rem border-transparent border-round-lg text-sm transition-duration-200 pl-3 focus:border-purple-500"
-              mask="99.999-999"
-              placeholder="Informe seu CEP"
+            {/* @ts-ignore */}
+            <Input
+              type="text"
+              placeholder="Informe sua cidade"
               {...register("cidade", {
                 required: true,
               })}
             />
-          </Label>
-          <Label $w="45%">
-            <Text>Bairro</Text>
-            {/*@ts-ignore */}
-            <Select
-              {...register("bairro", {
-                required: true,
-              })}
-            >
-              <option value={""}>Informe seu bairro:</option>
-              <option>Fortaleza</option>
-            </Select>
-
-            {errors?.bairro?.type === "required" && (
-              <p className="text-xl p-2 bg-red-300 border-round-xs text-white">
-                Informe seu bairro
-              </p>
-            )}
           </Label>
           <Button
             className="w-full h-3rem border-round-lg flex justify-content-center align-items-center text-xl font-bold bg-indigo-700 text-cyan-50 border-none hover:bg-indigo-800"
