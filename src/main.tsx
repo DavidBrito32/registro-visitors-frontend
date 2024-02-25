@@ -3,7 +3,7 @@ import App from "./App.tsx";
 import { createGlobalStyle } from "styled-components";
 import { PrimeReactProvider } from "primereact/api";
 import "/node_modules/primeflex/primeflex.css";
-import 'primeicons/primeicons.css';
+import "primeicons/primeicons.css";
 import "primeflex/themes/primeone-light.css";
 
 export const GlobalStyle = createGlobalStyle`
@@ -19,8 +19,8 @@ export const GlobalStyle = createGlobalStyle`
 `;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
+    <GlobalStyle />
     <PrimeReactProvider>
-      <GlobalStyle />
       <App />
     </PrimeReactProvider>
   </>

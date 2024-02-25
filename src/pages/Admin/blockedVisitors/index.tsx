@@ -2,67 +2,47 @@ import { Button } from "primereact/button";
 import { Box, Title, WrapContainer } from "../../../styles/styles";
 import { FaSearch } from "react-icons/fa";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import { InputMask } from "primereact/inputmask";
 import { useEffect, useState } from "react";
 import DataTable from "../../../components/data-table";
 import { API } from "../../../services/API";
-import { InputMask } from "primereact/inputmask"; 
-import EditVisitor from "./editUser";
 
-interface Tflags {
+interface Flags {
   search: boolean;
-  visitante?: boolean;
-  edit: boolean;
 }
-
-interface Visitor {
+export interface BlockedVisitor {
   id: string;
   name: string;
-  cpf: number;
-  profissao: string;
-  genero: string;
-  idade: number;
-  cidade: string;
-  estado: string;
+  cpf: string;
+  message: string;
 }
 
-const VisitorsPage = () => {
-  const [flags, setFlags] = useState<Tflags>({
+const BlockedPage = () => {
+  const [flags, setFlags] = useState<Flags>({
     search: false,
-    visitante: true,
-    edit: false,
   });
-  const [idEdit, setIdEdit] = useState<string>();
-
-  const getAllVisitors = async () => {
-    API.get("visitor").then((item): void => {
-      setVisitors(item.data);
-    });
-  };
-
-  const deleteVisitor = async (id: string): Promise<void> => {
-    await API.delete(`visitor/${id}`)
-      .then(() => {
-        console.log("deletado com sucesso");
-        getAllVisitors();
+  const [data, setData] = useState<Array<BlockedVisitor>>([]);
+  
+  const getAllBlockedVisitor = async () => {
+    await API.get("/visitor/blacklist")
+      .then((item) => {
+        setData(item.data);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err.message);
       });
   };
 
-  const toogleSearch = (): void =>
-    setFlags({ ...flags, search: !flags.search });
-  const toogleEdit = (id?: string): void => {
-    setFlags({ ...flags, edit: !flags.edit });
-    setIdEdit(id);
-  };
-
-  const header: Array<string> = ["Nome", "CPF", "Cidade", "Estado"];
-  const [visitors, setVisitors] = useState<Array<Visitor>>([]);
-
-  useEffect((): void => {
-    getAllVisitors();
+  useEffect(() => {
+    getAllBlockedVisitor();
   }, []);
+
+  const header: Array<string> = [
+    "usuario bloqueado",
+    "CPF",
+    "Motivo do Bloqueio",
+  ];
+  const toogleSearch = () => setFlags({ ...flags, search: !flags.search });
 
   return (
     <>
@@ -77,7 +57,7 @@ const VisitorsPage = () => {
           $bg="white"
         >
           <Title $align="left" $color="black">
-            Visitantes Cadastrados
+            Visitantes Bloqueados
           </Title>
           <Box $w="100%" $mt="58px" $justify="space-between">
             <Title $align="left" $color="black" $size="16px">
@@ -89,9 +69,6 @@ const VisitorsPage = () => {
                   className="w-full h-3rem border-2 border-pink-200 border-round-lg  text-sm transition-duration-200 pl-3 focus:border-purple-500"
                   mask="999.999.999-99"
                   placeholder="Informe seu CPF"
-                  // {...register("cpf", {
-                  //   required: true,
-                  // })}
                 />
                 <Button
                   icon={
@@ -120,23 +97,11 @@ const VisitorsPage = () => {
               </Box>
             )}
           </Box>
-          <DataTable
-            edit={toogleEdit}
-            deleteUser={deleteVisitor}
-            header={header}
-            body={visitors}
-            visitante={flags.visitante}
-          />
+          <DataTable header={header} tableColor="gray" body={data} get={getAllBlockedVisitor} />
         </Box>
       </WrapContainer>
-      <EditVisitor
-        id={idEdit}
-        toogle={toogleEdit}
-        uptateVisitor={getAllVisitors}
-        state={flags.edit}
-      />
     </>
   );
 };
 
-export default VisitorsPage;
+export default BlockedPage;

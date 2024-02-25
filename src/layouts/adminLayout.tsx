@@ -13,6 +13,7 @@ import Logomarca from "./assets/logo.svg";
 import { PiChartPieSliceFill } from "react-icons/pi";
 import { FiUsers } from "react-icons/fi";
 import { SlBookOpen } from "react-icons/sl";
+import { FaList } from "react-icons/fa";
 
 const AdminLayout = (): JSX.Element => {
   const navigate = useNavigate();
@@ -59,6 +60,20 @@ const AdminLayout = (): JSX.Element => {
                 className="text-white text-lg font-bold"
               >
                 Visitantes
+              </Link>
+            </ListItem>
+            <ListItem
+              onClick={() => navigate("/admin/blacklist")}
+              className={
+                location.pathname === "/admin/blacklist" ? "active" : ""
+              }
+            >
+              <FaList className="text-white w-2rem h-auto" />
+              <Link
+                to={"/admin/blacklist"}
+                className="text-white text-lg font-bold"
+              >
+                Lista Negra
               </Link>
             </ListItem>
           </ListMenu>
