@@ -215,9 +215,11 @@ export const Header = styled.header`
   width: 100%;
   height: 122px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  position: relative;
   background-color: black;
+  padding: 0 50px;
 `;
 export const NavBar = styled.div`
   width: 300px;
@@ -345,6 +347,7 @@ export const TBody = styled.tbody<StyledProps>`
 `;
 export const Tr = styled.tr<StyledProps>`
   height: ${(props) => props.$h || "auto"};
+  color: ${(props) => props.$color || "black"};
   width: ${(props) => props.$w || "auto"};
   padding: ${(props) => props.$p || "0"};
   margin: ${(props) => props.$m || "0"};

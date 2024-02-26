@@ -8,6 +8,7 @@ import UsersPage from "../pages/Admin/users";
 import VisitorsPage from "../pages/Admin/visitors";
 import LoginPage from "../pages/login";
 import BlockedPage from "../pages/Admin/blockedVisitors";
+import { CheckToken } from './../hooks/CheckToken';
 
 const Ways = (): JSX.Element => {
   return (
@@ -19,12 +20,12 @@ const Ways = (): JSX.Element => {
             <Route path="registred" element={<RegistedPage />} />
           </Route>
           <Route path="/auth" element={<LoginPage />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<ResumoPage />} />
-            <Route path="users" element={<UsersPage />} />
-            <Route path="visitors" element={<VisitorsPage />} />
-            <Route path="blacklist" element={<BlockedPage />} />
-          </Route>
+            <Route path="/admin" element={<CheckToken><AdminLayout /></CheckToken>}>
+              <Route index element={<ResumoPage />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="visitors" element={<VisitorsPage />} />
+              <Route path="blacklist" element={<BlockedPage />} />
+            </Route>
         </Routes>
       </BrowserRouter>
     </>

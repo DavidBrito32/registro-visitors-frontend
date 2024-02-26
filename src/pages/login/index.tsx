@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { useContext } from "react";
+import { API } from "../../services/API";
 import {
   Button,
   Container,
@@ -10,6 +12,8 @@ import {
 } from "../../styles/styles";
 import BG from "./assets/Piramide.jpg";
 import { useForm } from "react-hook-form";
+import { UserContext } from "../../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 interface Login {
   email: string;
@@ -18,16 +22,25 @@ interface Login {
 }
 
 const LoginPage = (): JSX.Element => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<Login>();
+  const { setState } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<Login>();
 
   const LoginData = async (data: Login): Promise<void> => {
-    console.log(data);
-    reset();
+    await API.post("users/auth/login", data)
+      .then((item) => {
+        setState(item.data);
+        reset();
+        localStorage.setItem("token", item.data.token);
+        localStorage.setItem("name", item.data.usuario.name);
+        localStorage.setItem("email", item.data.usuario.email);
+        localStorage.setItem("role", item.data.usuario.role);
+        console.log(item);
+        navigate("/admin");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

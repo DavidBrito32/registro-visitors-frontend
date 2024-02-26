@@ -22,7 +22,7 @@ const BlockedPage = () => {
     search: false,
   });
   const [data, setData] = useState<Array<BlockedVisitor>>([]);
-  
+
   const getAllBlockedVisitor = async () => {
     await API.get("/visitor/blacklist")
       .then((item) => {
@@ -97,7 +97,13 @@ const BlockedPage = () => {
               </Box>
             )}
           </Box>
-          <DataTable header={header} tableColor="gray" body={data} get={getAllBlockedVisitor} />
+          <DataTable
+            header={header}
+            tableColor="purple"
+            color={"white"}
+            body={data}
+            get={getAllBlockedVisitor}
+          />
         </Box>
       </WrapContainer>
     </>

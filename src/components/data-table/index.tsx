@@ -16,6 +16,8 @@ import { FaUserLock } from "react-icons/fa";
 import { API } from "../../services/API";
 import { Button } from "primereact/button";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { InputText } from "primereact/inputtext";
 type TBody = {
   id: string;
   name: string;
@@ -33,6 +35,7 @@ type TBody = {
 interface Props {
   header: Array<string>;
   body?: Array<TBody>;
+  color?: string;
   tableColor?: string | undefined;
   deleteUser?: (id: string) => Promise<void>;
   visitante?: boolean;
@@ -40,22 +43,35 @@ interface Props {
   get?: () => Promise<void>;
 }
 
+interface Block {
+  motivo: string;
+}
+
 const DataTable = ({
   header,
   body,
   tableColor,
   deleteUser,
+  color,
   visitante,
   edit,
-  get
+  get,
 }: Props): JSX.Element => {
-  const blockVisitor = async (id: string): Promise<void> => {
-    await API.post(`/visitor/block/${id}`, {
-      id,
-      message: "ficou malinando",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Block>();
+  const blockVisitor = async (data: Block): Promise<void> => {
+    await API.post(`/visitor/block/${userLock}`, {
+      id: userLock,
+      message: data.motivo,
     })
       .then((item) => {
         console.log(item);
+        reset();
+        setLock(false);
       })
       .catch((err) => {
         console.log(err);
@@ -64,13 +80,21 @@ const DataTable = ({
 
   const [toogle, setToogle] = useState<boolean>(false);
   const [unLock, setUnlock] = useState<boolean>(false);
+  const [lock, setLock] = useState<boolean>(false);
   const [userIdToDelete, setUserIdToDelete] = useState<string>("");
   const [userIdTounlock, setUserIdToUnlock] = useState<string>("");
+  const [userLock, setUserLock] = useState<string>("");
 
   const toogleDeleteUser = async (id: string) => {
     setToogle(true);
     setUserIdToDelete(id);
   };
+
+  const lockVisitor = (id: string) => {
+    setLock(!lock);
+    setUserLock(id);
+  };
+
   const toogleUnlock = async (id: string) => {
     setUnlock(true);
     setUserIdToUnlock(id);
@@ -97,7 +121,7 @@ const DataTable = ({
     <>
       <Table $w="100%">
         <Thead $h="28px">
-          <Tr $bg={tableColor}>
+          <Tr $color={color} $bg={tableColor}>
             {header.map((item, index) => (
               <Th scope="col" key={index}>
                 {item}
@@ -161,7 +185,7 @@ const DataTable = ({
                       icon={
                         <FaUserLock className="text-black text-center w-12 h-auto" />
                       }
-                      onClick={() => blockVisitor(item.id)}
+                      onClick={() => lockVisitor(item.id)}
                       className="p-1 flex justify-content-center align-items-center text-base font-bold border-round-sm border-none bg-pink-400 hover:text-white hover:bg-pink-500 transition-duration-200"
                     />
                   )}
@@ -198,6 +222,51 @@ const DataTable = ({
               $radius="8px"
               $bg="#256565"
               onClick={() => setToogle(false)}
+            >
+              Não
+            </Botao>
+          </Box>
+        </Box>
+      </Overlay>
+      <Overlay className={lock ? "active" : ""}>
+        <Box
+          $w="350px"
+          $dir="column"
+          $justify="center"
+          $p="30px"
+          $bg="white"
+          $radius="12px"
+        >
+          <Text $size="22px" $align="center" $color="black">
+            Deseja realmente bloquear o acesso do visitante??
+          </Text>
+          <InputText
+            type="text"
+            {...register("motivo", {
+              required: true,
+            })}
+            className="w-full h-3rem border-gray-500 border-round-lg text-sm transition-duration-200 pl-3 focus:border-purple-500"
+            placeholder="Informe o motivo"
+          />
+          {errors.motivo?.type === "required" && (
+            <p>É obrigatorio preencher este campo!</p>
+          )}
+          <Box>
+            <Botao
+              $size="16px"
+              $p="8px"
+              $radius="8px"
+              $bg="#871003"
+              onClick={() => handleSubmit(blockVisitor)()}
+            >
+              Sim
+            </Botao>
+            <Botao
+              $size="16px"
+              $p="8px"
+              $radius="8px"
+              $bg="#256565"
+              onClick={() => setLock(false)}
             >
               Não
             </Botao>
