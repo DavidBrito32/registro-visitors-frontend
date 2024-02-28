@@ -35,7 +35,7 @@ const VisitorsPage = () => {
 
   const getAllVisitors = async () => {
     API.get("visitor").then((item): void => {
-      setVisitors(item.data);
+      setVisitors(item.data.visitantes);
     });
   };
 

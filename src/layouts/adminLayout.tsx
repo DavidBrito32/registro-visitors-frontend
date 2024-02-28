@@ -24,7 +24,6 @@ const AdminLayout = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = useContext(UserContext);
-  console.log(state);
 
   const logout = () => {
     localStorage.removeItem("name");

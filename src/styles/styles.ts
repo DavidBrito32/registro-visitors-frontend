@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface StyledProps {
   $img?: string | undefined;
+  $wrap?: string | undefined;
   $w?: string | undefined;
   scope?: string | undefined;
   type?: string | undefined;
@@ -136,6 +137,7 @@ export const Input = styled.input<StyledProps>`
   height: ${(props) => props.$h || "50px"};
   border-radius: ${(props) => props.$radius || "8px"};
   border: none;
+  text-transform: capitalize;
   background-color: white;
   padding-left: 20px;
   transition: all ease 200ms;
@@ -290,6 +292,7 @@ export const Box = styled.div<StyledProps>`
   width: ${(props) => props.$w || "auto"};
   display: flex;
   flex: ${(props) => props.$full || "none"};
+  flex-wrap: ${(props) => props.$wrap || "no-wrap"};
   padding: ${(props) => props.$p || "0"};
   margin: ${(props) => props.$m || "0"};
   margin-top: ${(props) => props.$mt || "0"};
