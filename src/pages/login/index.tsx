@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { API } from "../../services/API";
 import {
+  Box,
   Button,
   Container,
   Form,
   Input,
   Label,
+  Overlay,
   Text,
   Title,
 } from "../../styles/styles";
@@ -21,8 +23,20 @@ interface Login {
   remember: boolean;
 }
 
+interface Message {
+  message: string;
+  status: string;
+  active: boolean;
+}
+
 const LoginPage = (): JSX.Element => {
   const { setState } = useContext(UserContext);
+  const [request, setRequest] = useState<Message>({
+    message: "",
+    status: "",
+    active: false
+  })
+  console.log(request);
   const navigate = useNavigate();
   const { register, handleSubmit, reset, formState: { errors } } = useForm<Login>();
 
@@ -30,16 +44,19 @@ const LoginPage = (): JSX.Element => {
     await API.post("users/auth/login", data)
       .then((item) => {
         setState(item.data);
+        console.log(item.data)
         reset();
-        localStorage.setItem("token", item.data.token);
-        localStorage.setItem("name", item.data.usuario.name);
-        localStorage.setItem("email", item.data.usuario.email);
-        localStorage.setItem("role", item.data.usuario.role);
-        console.log(item);
+       localStorage.setItem("token", item.data.token);
+       localStorage.setItem("name", item.data.usuario.name);
+       localStorage.setItem("email", item.data.usuario.email);
+       localStorage.setItem("role", item.data.usuario.role);
+        setRequest({...request, active: false})
         navigate("/admin");
+        console.log(item);
       })
       .catch((err) => {
         console.log(err);
+        setRequest({...request, message: err.response.data, status: "Acesso não autorizado", active: true})
       });
   };
 
@@ -53,6 +70,7 @@ const LoginPage = (): JSX.Element => {
             {/* @ts-ignore */}
             <Input
               type="text"
+              $transform="none"
               placeholder="informe seu e-mail:"
               {...register("email", {
                 required: true,
@@ -69,6 +87,7 @@ const LoginPage = (): JSX.Element => {
             {/* @ts-ignore */}
             <Input
               type="text"
+              $transform="none"
               placeholder="informe sua senha:"
               {...register("password", {
                 required: true,
@@ -104,6 +123,12 @@ const LoginPage = (): JSX.Element => {
             Entrar
           </Button>
         </Form>
+        <Overlay onClick={() => setRequest({...request, active: false})} className={request.active ? "active" : ""}>
+          <Box $p="30px 30px" $bg="white" $radius="12px" $dir="column">
+            <Title $color="black">{request.status}</Title>
+            <Text $size="16px" $color="black">{request.message}</Text>
+          </Box>
+        </Overlay>
       </Container>
     </>
   );

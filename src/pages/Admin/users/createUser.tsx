@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { InputMask } from "primereact/inputmask";
 import { API } from "../../../services/API";
 import { AxiosResponse } from "axios";
+import { CONFIGS } from "../../../services/axiosHeaders";
 
 interface Props {
   state: boolean;
@@ -37,7 +38,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
   } = useForm<User>();
 
   const criarUsuario = async (data: User): Promise<void> => {
-    await API.post("users/auth/", data)
+    await API.post("users/auth/", data, CONFIGS)
       .then((item: AxiosResponse) => {
         reset();
         toogle();
@@ -62,6 +63,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
               <Text $color="black">Nome: </Text>
               {/*@ts-ignore */}
               <Input
+              $transform="none"
                 $w="100%"
                 $border="2px solid pink"
                 placeholder="Digite o nome do usuario"
@@ -79,6 +81,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
               <Text $color="black">Email: </Text>
               {/*@ts-ignore */}
               <Input
+              $transform="none"
                 $w="100%"
                 $border="2px solid pink"
                 placeholder="Digite o email do usuario"
@@ -102,6 +105,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
               <Text $color="black">Cargo: </Text>
               {/*@ts-ignore */}
               <Input
+              $transform="none"
                 $w="100%"
                 $border="2px solid pink"
                 placeholder="Digite o cargo do usuario"
@@ -114,6 +118,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
               <Text $color="black">Senha: </Text>
               {/*@ts-ignore */}
               <Input
+              $transform="none"
                 $w="100%"
                 $border="2px solid pink"
                 placeholder="Digite o senha do usuario"

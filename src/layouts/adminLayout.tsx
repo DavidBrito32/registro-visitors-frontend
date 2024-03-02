@@ -17,19 +17,35 @@ import { PiChartPieSliceFill } from "react-icons/pi";
 import { FiUsers } from "react-icons/fi";
 import { SlBookOpen } from "react-icons/sl";
 import { FaList } from "react-icons/fa";
-import { useContext } from "react";
-import { UserContext } from "../context/userContext";
+import { useEffect, useState } from "react";
+
+interface Data {
+  name: string | null;
+  role: string | null;
+  email: string | null;
+}
 
 const AdminLayout = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { state } = useContext(UserContext);
+  const [dados, setDados] = useState<Data>({
+    name: "",
+    role: "",
+    email: ""
+  });
+  
+  
+
+  useEffect(() => {
+    setDados({
+      name: localStorage.getItem("name"),
+      role: localStorage.getItem("role"),
+      email: localStorage.getItem("email")
+    })
+  }, []);
 
   const logout = () => {
-    localStorage.removeItem("name");
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
-    localStorage.removeItem("token");
+    localStorage.clear();
     navigate("/");
   }
 
@@ -39,7 +55,7 @@ const AdminLayout = (): JSX.Element => {
         <Header>
           <Logo src={Logomarca} alt="logomarca Museum" />
           <Box $dir="column">
-            <Text>{state.name}</Text>
+            <Text>{dados.name}</Text>
             <Button onClick={logout} $bg="green" $size="14px" $w="64px" $p="4px" $radius="24px">
               Sair
             </Button>
@@ -57,7 +73,7 @@ const AdminLayout = (): JSX.Element => {
                 Resumo
               </Link>
             </ListItem>
-            {state.role === "Admin" && (
+            {dados.role === "Admin" && (
               <ListItem
                 className={location.pathname === "/admin/users" ? "active" : ""}
                 onClick={() => navigate("/admin/users")}

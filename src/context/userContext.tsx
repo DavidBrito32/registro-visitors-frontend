@@ -2,27 +2,27 @@ import { ReactElement, createContext, useState } from "react";
 
 interface Props {
   state: {
-    name: string;
-    email: string;
-    token: string;
-    role: string
+    name: string | null;
+    email: string | null;
+    token: string | null;
+    role: string | null;
   };
   setState: React.Dispatch<React.SetStateAction<UserType>>;
 }
 
 interface UserType {
-    name: string;
-    email: string;
-    token: string;
-    role: string;
+    name: string | null;
+    email: string | null;
+    token: string | null;
+    role: string | null;
 }
 
 const DEFAULT_VALUE = {
   state: {
-    name: localStorage.getItem("name") || "",
-    email: localStorage.getItem("email") || "",
-    role: localStorage.getItem("role") || "",
-    token: localStorage.getItem("token") || "",
+    name: localStorage.getItem("name") || null,
+    email: localStorage.getItem("email") || null,
+    role: localStorage.getItem("role") || null,
+    token: localStorage.getItem("token") || null,
   },
   setState: () => {},
 };

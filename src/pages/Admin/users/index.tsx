@@ -1,11 +1,5 @@
 import { Button } from "primereact/button";
-import {
-  Box,
-  Overlay,
-  Text,
-  Title,
-  WrapContainer,
-} from "../../../styles/styles";
+import { Box, Overlay, Text, Title, WrapContainer } from "../../../styles/styles";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
@@ -14,6 +8,7 @@ import { API } from "../../../services/API";
 import CreateUser from "./createUser";
 import { InputMask } from "primereact/inputmask";
 import EditUser from "./editUser";
+import { CONFIGS } from "../../../services/axiosHeaders";
 
 interface Tflags {
   search: boolean;
@@ -32,12 +27,11 @@ const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [idUser, setIdUser] = useState<string>();
   const [retorno, setRetorno] = useState<string>("");
-
   const header: Array<string> = ["Nome", "CPF", "Cargo"];
 
   const getUsers = async () => {
-    await API.get("users").then((item) => {
-      setUsers(item.data);
+    await API.get("users", CONFIGS).then((item) => {
+      setUsers(item.data.usuarios);
     });
   };
 

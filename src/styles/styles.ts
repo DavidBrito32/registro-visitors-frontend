@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface StyledProps {
   $img?: string | undefined;
   $wrap?: string | undefined;
+  $transform?: string | undefined;
   $w?: string | undefined;
   scope?: string | undefined;
   type?: string | undefined;
@@ -137,7 +138,7 @@ export const Input = styled.input<StyledProps>`
   height: ${(props) => props.$h || "50px"};
   border-radius: ${(props) => props.$radius || "8px"};
   border: none;
-  text-transform: capitalize;
+  text-transform: ${props => props.$transform || "capitalize"};
   background-color: white;
   padding-left: 20px;
   transition: all ease 200ms;
@@ -270,6 +271,12 @@ export const WrapContainer = styled.div<StyledProps>`
   background-color: ${(props) => props.$bg || ""};
   gap: 30px;
   padding: 50px;
+
+    @media only screen and (max-width: 1024px) {
+        height: 100%;
+        gap: 10px;
+        padding: 10px 10px;
+    }
 `;
 export const Grafic = styled.div<StyledProps>`
   width: 440px;
@@ -289,8 +296,9 @@ export const Beetween = styled.div`
   justify-content: space-between;
 `;
 export const Box = styled.div<StyledProps>`
-  width: ${(props) => props.$w || "auto"};
   display: flex;
+  width: ${(props) => props.$w || "auto"};
+  height: ${(props) => props.$h || "auto"};
   flex: ${(props) => props.$full || "none"};
   flex-wrap: ${(props) => props.$wrap || "no-wrap"};
   padding: ${(props) => props.$p || "0"};
@@ -301,13 +309,16 @@ export const Box = styled.div<StyledProps>`
   margin-bottom: ${(props) => props.$mb || "0"};
   background-color: ${(props) => props.$bg || ""};
   border-radius: ${(props) => props.$radius || "0px"};
-  height: ${(props) => props.$h || "auto"};
   width: ${(props) => props.$w || "auto"};
   margin-top: ${(props) => props.$mt || "0px"};
   flex-direction: ${(props) => props.$dir || "row"};
   align-items: ${(props) => props.$align || "center"};
   justify-content: ${(props) => props.$justify || "center"};
   gap: 10px;
+
+  @media only screen and (max-width: 768px){
+    width: 100%;
+  }
 `;
 export const Circle = styled.div`
   width: 170px;

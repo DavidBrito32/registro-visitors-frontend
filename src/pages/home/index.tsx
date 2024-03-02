@@ -47,12 +47,11 @@ const HomePage = (): JSX.Element => {
       .then((item) => {
         reset();
         toogleModal();
-        setError(item.data);
+        setError(item.data.message);
       })
       .catch((err) => {
         toogleModal();
-        setError(err.response.data);
-        console.log(err);
+        setError(err.response);
       });
   };
 
