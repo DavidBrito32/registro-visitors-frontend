@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet, useLocation, Link, useNavigate } from "react-router-dom";
 import {
   AutoContainer,
@@ -28,19 +29,15 @@ interface Data {
 const AdminLayout = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [dados, setDados] = useState<Data>({
-    name: "",
-    role: "",
-    email: ""
-  });
-  
-  
+  const [dados, setDados] = useState<Data>({name: "", role: "", email: ""});  
+  const user = localStorage.getItem("usuario");
+  const usuario: Data = user !== null && JSON.parse(user);
 
   useEffect(() => {
     setDados({
-      name: localStorage.getItem("name"),
-      role: localStorage.getItem("role"),
-      email: localStorage.getItem("email")
+      name: usuario && usuario.name,
+      role: usuario && usuario.role,
+      email: usuario && usuario.email
     })
   }, []);
 

@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Grafic,
+  Overlay,
   Text,
   Title,
   WrapContainer,
@@ -13,6 +14,7 @@ import { Chart } from "primereact/chart";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PDFDocument from "../../../components/PDFDocument";
 import { API } from "../../../services/API";
+import { CONFIGS } from "../../../services/axiosHeaders";
 export interface GenderDB {
   gender: string;
   total: number;
@@ -37,12 +39,10 @@ export interface ResultsDB {
 }
 const ResumoPage = () => {
   const [dataRequest, setDataRequest] = useState<ResultsDB>();
-  console.log(dataRequest)
 
   const Request = async () => {
-    await API.get("/visitor/results").then((item) => {
-      setDataRequest(item.data);
-    })
+    const resultados = await API.get("/visitor/results", CONFIGS);
+    setDataRequest(await resultados.data);    
   }
 
   const labelCity = dataRequest?.city.map(item => item.city);
@@ -101,12 +101,12 @@ const ResumoPage = () => {
     datasets: [
       {
         //@ts-ignore
-        label: labelProfession?.profession,
+        label: "Visitantes por profissão",
         data: dataProfession,
         backgroundColor: [
           "rgba(255, 159, 64, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
+          "rgba(0, 255, 255, 0.2)",
+          "rgba(251, 0, 255, 0.2)",
           "rgba(153, 102, 255, 0.2)",
         ],
         borderColor: [
@@ -213,7 +213,7 @@ const ResumoPage = () => {
 
 
   useEffect(() => {
-    Request();
+      Request();
   }, []);
   return (
     <>
@@ -232,7 +232,7 @@ const ResumoPage = () => {
             <Box $h="100%" $p="05px 0" $w="100%" $justify="center" $align="center">
               <Chart
                 className=" h-full"
-                type="bar"
+                type="pie"
                 data={profession}
                 options={optionsProfession}
               />
@@ -280,6 +280,11 @@ const ResumoPage = () => {
             </Box>
           </Grafic>
         </Box>
+        <Overlay>
+            <Box>
+              <Title>BO da API</Title>
+            </Box>
+        </Overlay>
       </WrapContainer>
     </>
   );

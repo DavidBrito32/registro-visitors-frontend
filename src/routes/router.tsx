@@ -9,6 +9,7 @@ import VisitorsPage from "../pages/Admin/visitors";
 import LoginPage from "../pages/login";
 import BlockedPage from "../pages/Admin/blockedVisitors";
 import { CheckToken } from './../hooks/CheckToken';
+import NotFoundPage from "../pages/notFount";
 
 const Ways = (): JSX.Element => {
   return (
@@ -26,6 +27,8 @@ const Ways = (): JSX.Element => {
               <Route path="visitors" element={<VisitorsPage />} />
               <Route path="blacklist" element={<BlockedPage />} />
             </Route>
+
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </>

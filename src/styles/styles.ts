@@ -31,6 +31,7 @@ interface StyledProps {
   $weight?: string | undefined;
   $border?: string | undefined;
   $full?: string | undefined;
+  $blur?: string | undefined;
 }
 export const Container = styled.div<StyledProps>`
   width: 100%;
@@ -50,6 +51,70 @@ export const Container = styled.div<StyledProps>`
     padding-bottom: 30px;
   }
 `;
+
+export const GlassContainer = styled.div<StyledProps>`
+    width: ${(props) => props.$w || "auto"};
+  height: ${(props) => props.$h || "auto"};
+  flex: ${(props) => props.$full || "none"};
+  flex-wrap: ${(props) => props.$wrap || "no-wrap"};
+  padding: ${(props) => props.$p || "0"};
+  margin: ${(props) => props.$m || "0"};
+  margin-top: ${(props) => props.$mt || "0"};
+  margin-left: ${(props) => props.$ml || "0"};
+  margin-right: ${(props) => props.$mr || "0"};
+  margin-bottom: ${(props) => props.$mb || "0"};
+  background-color: ${(props) => props.$bg || ""};
+  border-radius: ${(props) => props.$radius || "0px"};
+  width: ${(props) => props.$w || "auto"};
+  margin-top: ${(props) => props.$mt || "0px"};
+  flex-direction: ${(props) => props.$dir || "row"};
+  align-items: ${(props) => props.$align || "center"};
+  justify-content: ${(props) => props.$justify || "center"};
+  backdrop-filter: ${props => `blur(${props.$blur})` || "blur(10px)"};
+`;
+
+
+export const Spinner = styled.div<StyledProps>`
+  width: 150px;
+  height: 20px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+`;
+
+export const Progress = styled.div`
+  height: 20px;
+  border-radius: 8px;
+  border: 1px solid black;
+  animation: fullProgress 2.5s infinite linear;
+  @keyframes fullProgress {
+    0% {
+      width: 0%;
+      background-color: gray;
+    }100%{
+      width: 100%;
+      background-color: green;
+    }
+  }
+`;
+
+export const Img = styled.img<StyledProps>`
+    padding: ${(props) => props.$p || "0"};
+  margin: ${(props) => props.$m || "0"};
+  margin-top: ${(props) => props.$mt || "0"};
+  margin-left: ${(props) => props.$ml || "0"};
+  margin-right: ${(props) => props.$mr || "0"};
+  margin-bottom: ${(props) => props.$mb || "0"};
+  background-color: ${(props) => props.$bg || ""};
+  border-radius: ${(props) => props.$radius || "0px"};
+  height: ${(props) => props.$h || "auto"};
+  width: ${(props) => props.$w || "auto"};
+  display: block;
+`;
+
+
 export const PublicHeader = styled.header`
   width: 100%;
   height: 109px;
@@ -180,6 +245,7 @@ export const Overlay = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  z-index: 10000;
   height: 100%;
   top: 0;
   left: 0;
@@ -258,9 +324,9 @@ export const ListItem = styled.li`
 `;
 export const AutoContainer = styled.div`
   flex: 1;
-  height: auto;
-  max-height: 100vh;
+  width: 100%;
   background-color: #aab7ba;
+  overflow: initial;
 `;
 export const WrapContainer = styled.div<StyledProps>`
   width: 100%;
@@ -297,6 +363,7 @@ export const Beetween = styled.div`
 `;
 export const Box = styled.div<StyledProps>`
   display: flex;
+  position: relative;
   width: ${(props) => props.$w || "auto"};
   height: ${(props) => props.$h || "auto"};
   flex: ${(props) => props.$full || "none"};
@@ -358,6 +425,7 @@ export const TBody = styled.tbody<StyledProps>`
   margin-right: ${(props) => props.$mr || "0"};
   margin-bottom: ${(props) => props.$mb || "0"};
   background-color: ${(props) => props.$bg || ""};
+  overflow: hidden;
 `;
 export const Tr = styled.tr<StyledProps>`
   height: ${(props) => props.$h || "auto"};

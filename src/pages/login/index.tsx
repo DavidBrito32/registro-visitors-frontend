@@ -44,18 +44,13 @@ const LoginPage = (): JSX.Element => {
     await API.post("users/auth/login", data)
       .then((item) => {
         setState(item.data);
-        console.log(item.data)
         reset();
-       localStorage.setItem("token", item.data.token);
-       localStorage.setItem("name", item.data.usuario.name);
-       localStorage.setItem("email", item.data.usuario.email);
-       localStorage.setItem("role", item.data.usuario.role);
-        setRequest({...request, active: false})
-        navigate("/admin");
-        console.log(item);
+        localStorage.setItem("token", item.data.token);
+        localStorage.setItem("usuario", JSON.stringify(item.data.usuario));
+        setRequest({...request, active: false});
+        navigate(item.data.route);
       })
       .catch((err) => {
-        console.log(err);
         setRequest({...request, message: err.response.data, status: "Acesso não autorizado", active: true})
       });
   };

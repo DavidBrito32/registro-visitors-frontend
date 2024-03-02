@@ -18,6 +18,8 @@ import { Button } from "primereact/button";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
+import { CONFIGS } from "../../services/axiosHeaders";
+import Loading from "../loading";
 type TBody = {
   id: string;
   name: string;
@@ -63,15 +65,21 @@ const DataTable = ({
     reset,
     formState: { errors },
   } = useForm<Block>();
+
   const blockVisitor = async (data: Block): Promise<void> => {
-    await API.post(`/visitor/block/${userLock}`, {
-      id: userLock,
-      message: data.motivo,
-    })
+    await API.post(
+      `/visitor/block/${userLock}`,
+      {
+        id: userLock,
+        message: data.motivo,
+      },
+      CONFIGS
+    )
       .then((item) => {
         console.log(item);
         reset();
         setLock(false);
+        setConfirmedLock(true);
       })
       .catch((err) => {
         console.log(err);
@@ -80,10 +88,13 @@ const DataTable = ({
 
   const [toogle, setToogle] = useState<boolean>(false);
   const [unLock, setUnlock] = useState<boolean>(false);
+  const [confirmedLock, setConfirmedLock] = useState<boolean>(false);
+  const [confirmedUnlock, setConfirmedUnlock] = useState<boolean>(false);
   const [lock, setLock] = useState<boolean>(false);
   const [userIdToDelete, setUserIdToDelete] = useState<string>("");
   const [userIdTounlock, setUserIdToUnlock] = useState<string>("");
   const [userLock, setUserLock] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const toogleDeleteUser = async (id: string) => {
     setToogle(true);
@@ -106,11 +117,12 @@ const DataTable = ({
   };
 
   const unlockVisitor = async () => {
-    await API.delete(`/visitor/block/${userIdTounlock}`)
+    await API.delete(`/visitor/block/${userIdTounlock}`, CONFIGS)
       .then((item) => {
         setUnlock(false);
         get && get();
         console.log(item.data);
+        setConfirmedUnlock(true);
       })
       .catch((err) => {
         console.log(err);
@@ -119,6 +131,7 @@ const DataTable = ({
 
   return (
     <>
+      {body && (body.length === 0 || body?.length < 1) && <Loading loading={true} />}
       <Table $w="100%">
         <Thead $h="28px">
           <Tr $color={color} $bg={tableColor}>
@@ -136,6 +149,7 @@ const DataTable = ({
               <Tr key={item.id || item.ID} $h="28px" $bg="#FFFFFF">
                 <Td $weight="bold">{item.name}</Td>
                 <Td $weight="bold">{item.cpf}</Td>
+                {item.role && <Td $weight="bold">{item.email}</Td>}
                 <Td $weight="bold">{item.role || item.city || item.message}</Td>
                 {item.state && (
                   <Td $weight="bold">{item.role || item.state}</Td>
@@ -147,13 +161,15 @@ const DataTable = ({
                   $gap="05px"
                   $align="center"
                 >
-                  <Button
-                    icon={
-                      <BsPencilSquare className="text-black text-center w-12 h-auto" />
-                    }
-                    onClick={() => edit && edit(item.id)}
-                    className="p-1 flex justify-content-center align-items-center text-base font-bold border-round-sm border-none bg-pink-400 hover:text-white hover:bg-pink-500 transition-duration-200"
-                  />
+                  {!item.ID && (
+                    <Button
+                      icon={
+                        <BsPencilSquare className="text-black text-center w-12 h-auto" />
+                      }
+                      onClick={() => edit && edit(item.id)}
+                      className="p-1 flex justify-content-center align-items-center text-base font-bold border-round-sm border-none bg-pink-400 hover:text-white hover:bg-pink-500 transition-duration-200"
+                    />
+                  )}
                   {!visitante && !item.ID && (
                     <Button
                       icon={
@@ -194,6 +210,7 @@ const DataTable = ({
             ))}
         </TBody>
       </Table>
+
       <Overlay className={toogle ? "active" : ""}>
         <Box
           $w="350px"
@@ -228,6 +245,7 @@ const DataTable = ({
           </Box>
         </Box>
       </Overlay>
+
       <Overlay className={lock ? "active" : ""}>
         <Box
           $w="350px"
@@ -273,6 +291,43 @@ const DataTable = ({
           </Box>
         </Box>
       </Overlay>
+
+      <Overlay
+        className={confirmedLock ? "active" : ""}
+        onClick={() => setConfirmedLock(false)}
+      >
+        <Box
+          $w="350px"
+          $dir="column"
+          $justify="center"
+          $p="30px"
+          $bg="white"
+          $radius="12px"
+        >
+          <Text $size="22px" $align="center" $color="black">
+            Visitante Bloqueado com sucesso! ✅
+          </Text>
+        </Box>
+      </Overlay>
+
+      <Overlay
+        className={confirmedUnlock ? "active" : ""}
+        onClick={() => setConfirmedUnlock(false)}
+      >
+        <Box
+          $w="350px"
+          $dir="column"
+          $justify="center"
+          $p="30px"
+          $bg="white"
+          $radius="12px"
+        >
+          <Text $size="22px" $align="center" $color="black">
+            Acesso do visitante liberado com sucesso! ✅
+          </Text>
+        </Box>
+      </Overlay>
+
       <Overlay className={unLock ? "active" : ""}>
         <Box
           $w="350px"

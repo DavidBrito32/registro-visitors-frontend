@@ -3,12 +3,11 @@ import {
   Document,
   Page,
   StyleSheet,
-  Image,
-  Text,
 } from "@react-pdf/renderer";
-import Logo from "./assets/brasao-do-ceara.png";
 import { useEffect, useState } from "react";
 import { API } from "../../services/API";
+import { Html } from "react-pdf-html";
+import { CONFIGS } from "../../services/axiosHeaders";
 interface GenderDB {
   gender: string;
   total: number;
@@ -31,7 +30,6 @@ interface ResultsDB {
   state: Array<StateDB>,
   profession: Array<ProfessionDB>
 }
-
 const PDFDocument = (): JSX.Element => {
   const styles = StyleSheet.create({
     container: {
@@ -59,27 +57,72 @@ const PDFDocument = (): JSX.Element => {
   const [data, setData] = useState<ResultsDB>();
 
   const Request = async () => {
-    await API.get("/visitor/results").then((item) => {
+    await API.get("/visitor/results", CONFIGS).then((item) => {
       setData(item.data);
     })
   }
 
-  console.log(data);
+ 
   
+   const table = `
+   <div style="width: 100%; max-width: 800px; margin: 0 auto; padding: 20px;">
+  <h1 style="text-align: center;">Relatório Gerencial</h1>
+  <div style="margin-bottom: 20px;">
+    <h5 style="font-size: 16px; color: red; font-weight: bold; margin-bottom: 10px;">Visitantes por gênero:</h5>
+    <div style="font-size: 14px; margin-bottom: 5px;">
+      <p><strong>Gênero - Total</strong></p>
+      ${
+        data?.gender.map(item => (
+          `<p>${item.gender} - ${item.total}</p>`
+        ))
+      }
+    </div>
+  </div>
+  <div style="margin-bottom: 20px;">
+    <h5 style="font-size: 16px; color: red; font-weight: bold; margin-bottom: 10px;">Visitantes por cidade:</h5>
+    <div style="font-size: 14px; margin-bottom: 5px;">
+      ${
+        data?.city.map(item => (
+          `<p>${item.city} - ${item.total}</p>`
+        ))
+      }
+    </div>
+  </div>
+  <div style="margin-bottom: 20px;">
+    <h5 style="font-size: 16px; color: red; font-weight: bold; margin-bottom: 10px;">Visitantes por estado:</h5>
+    <div style="font-size: 14px; margin-bottom: 5px;">
+      ${
+        data?.state.map(item => (
+          `<p>${item.state} - ${item.total}</p>`
+        ))
+      }
+    </div>
+  </div>
+  <div style="margin-bottom: 20px;">
+    <h5 style="font-size: 16px; color: red; font-weight: bold; margin-bottom: 10px;">Visitantes por profissão:</h5>
+    <div style="font-size: 14px; margin-bottom: 5px;">
+      ${
+        data?.profession.map(item => (
+          `<p>${item.profession} - ${item.total}</p>`
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+   `;
 
   useEffect(() => {
     Request();
-  }, []);
+  }, [data]);
 
   return (
     <>
       <Document style={styles.container}>
         <Page size={"A4"}>
-          <Image src={Logo} style={styles.bg_imagem} />
           <View style={styles.main}>
-                <p >Relatorio de pessoas por cidade:</p>
-                { data && data.city.map((item) =>  (<Text color="black" key={item.city}>{item.city}</Text>)) }
-          </View>
+               <Html>{table}</Html>
+          </View>       
         </Page>
       </Document>
     </>

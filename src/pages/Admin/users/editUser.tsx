@@ -13,6 +13,7 @@ import {
 import { useForm } from "react-hook-form";
 import { API } from "../../../services/API";
 import { useState } from "react";
+import { CONFIGS } from "../../../services/axiosHeaders";
 
 interface Props {
   state: boolean;
@@ -42,7 +43,7 @@ const EditUser = ({ state, toogle, updateUsers, id }: Props) => {
 
   const editarUsuario = async (data: User): Promise<void> => {
     if (id) {
-      await API.put(`users/auth/${id}`, data)
+      await API.put(`users/auth/${id}`, data, CONFIGS)
         .then((item) => {
           reset();
           toogle();
@@ -115,6 +116,7 @@ const EditUser = ({ state, toogle, updateUsers, id }: Props) => {
               {/*@ts-ignore */}
               <Input
                 $w="100%"
+                $transform="none"
                 $border="2px solid pink"
                 placeholder="Digite o senha do usuario"
                 {...register("password")}

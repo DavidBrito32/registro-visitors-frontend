@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../../services/API";
+import { CONFIGS } from "../../../services/axiosHeaders";
 
 interface Registred {
   cpf: number;
@@ -33,9 +34,8 @@ const RegistedPage = (): JSX.Element => {
   const [error, setError] = useState<string>("");
 
   const submit = async (data: Registred): Promise<void> => {
-    await API.post("/visitor/registred", data)
+    await API.post("/visitor/registred", data, CONFIGS)
       .then((item) => {
-        console.log(data);
         reset();
         toogleModal();
         setUsuario(item.data.name);
@@ -44,9 +44,8 @@ const RegistedPage = (): JSX.Element => {
         }, 3000);
       })
       .catch((err) => {
-        console.log(data);
-        console.log(err);
         setError(err.message);
+        navigate("/");
       });
   };
 
