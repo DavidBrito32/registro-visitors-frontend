@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface StyledProps {
   $img?: string | undefined;
+  $overflow?: string | undefined;
   $wrap?: string | undefined;
   $transform?: string | undefined;
   $w?: string | undefined;
@@ -53,7 +54,7 @@ export const Container = styled.div<StyledProps>`
 `;
 
 export const GlassContainer = styled.div<StyledProps>`
-    width: ${(props) => props.$w || "auto"};
+  width: ${(props) => props.$w || "auto"};
   height: ${(props) => props.$h || "auto"};
   flex: ${(props) => props.$full || "none"};
   flex-wrap: ${(props) => props.$wrap || "no-wrap"};
@@ -70,30 +71,32 @@ export const GlassContainer = styled.div<StyledProps>`
   flex-direction: ${(props) => props.$dir || "row"};
   align-items: ${(props) => props.$align || "center"};
   justify-content: ${(props) => props.$justify || "center"};
-  backdrop-filter: ${props => `blur(${props.$blur})` || "blur(10px)"};
+  backdrop-filter: ${(props) => `blur(${props.$blur})` || "blur(10px)"};
 `;
-
 
 export const Spinner = styled.div<StyledProps>`
   width: 150px;
   height: 20px;
+  border: 2px solid black;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: left;
+  border-radius: 4px;
   align-items: center;
   z-index: 10000;
 `;
 
 export const Progress = styled.div`
   height: 20px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 1px solid black;
-  animation: fullProgress 2.5s infinite linear;
+  animation: fullProgress 3.5s infinite linear;
   @keyframes fullProgress {
     0% {
       width: 0%;
-      background-color: gray;
-    }100%{
+      background-color: red;
+    }
+    100% {
       width: 100%;
       background-color: green;
     }
@@ -101,7 +104,7 @@ export const Progress = styled.div`
 `;
 
 export const Img = styled.img<StyledProps>`
-    padding: ${(props) => props.$p || "0"};
+  padding: ${(props) => props.$p || "0"};
   margin: ${(props) => props.$m || "0"};
   margin-top: ${(props) => props.$mt || "0"};
   margin-left: ${(props) => props.$ml || "0"};
@@ -113,7 +116,6 @@ export const Img = styled.img<StyledProps>`
   width: ${(props) => props.$w || "auto"};
   display: block;
 `;
-
 
 export const PublicHeader = styled.header`
   width: 100%;
@@ -180,7 +182,15 @@ export const Label = styled.label<StyledProps>`
   width: ${(props) => props.$w || "auto"};
   flex-direction: ${(props) => props.$dir || "column"};
   gap: 5px;
+  position: relative;
 `;
+
+export const Absolut = styled.div`
+  position: absolute;
+  top: 55%;
+  right: 20px;
+`;
+
 export const Text = styled.p<StyledProps>`
   font-size: 16px;
   padding: ${(props) => props.$p || "0"};
@@ -203,7 +213,7 @@ export const Input = styled.input<StyledProps>`
   height: ${(props) => props.$h || "50px"};
   border-radius: ${(props) => props.$radius || "8px"};
   border: none;
-  text-transform: ${props => props.$transform || "capitalize"};
+  text-transform: ${(props) => props.$transform || "capitalize"};
   background-color: white;
   padding-left: 20px;
   transition: all ease 200ms;
@@ -325,8 +335,9 @@ export const ListItem = styled.li`
 export const AutoContainer = styled.div`
   flex: 1;
   width: 100%;
+  height: auto;
   background-color: #aab7ba;
-  overflow: initial;
+  overflow: scrool;
 `;
 export const WrapContainer = styled.div<StyledProps>`
   width: 100%;
@@ -337,12 +348,13 @@ export const WrapContainer = styled.div<StyledProps>`
   background-color: ${(props) => props.$bg || ""};
   gap: 30px;
   padding: 50px;
+  overflow-y: hidden;
 
-    @media only screen and (max-width: 1024px) {
-        height: 100%;
-        gap: 10px;
-        padding: 10px 10px;
-    }
+  @media only screen and (max-width: 1024px) {
+    height: 100%;
+    gap: 10px;
+    padding: 10px 10px;
+  }
 `;
 export const Grafic = styled.div<StyledProps>`
   width: 440px;
@@ -382,11 +394,13 @@ export const Box = styled.div<StyledProps>`
   align-items: ${(props) => props.$align || "center"};
   justify-content: ${(props) => props.$justify || "center"};
   gap: 10px;
+  overflow: ${(props) => props.$overflow || "none"};
 
-  @media only screen and (max-width: 768px){
+  @media only screen and (max-width: 768px) {
     width: 100%;
   }
 `;
+
 export const Circle = styled.div`
   width: 170px;
   height: 170px;
@@ -394,8 +408,9 @@ export const Circle = styled.div`
   background-color: #ad00ff30;
   border: 1px solid #ff00b8;
 `;
+
 export const Table = styled.table<StyledProps>`
-  height: ${(props) => props.$h || "auto"};
+  max-height: ${(props) => props.$h || "auto"};
   width: ${(props) => props.$w || "auto"};
   padding: ${(props) => props.$p || "0"};
   margin: ${(props) => props.$m || "0"};
@@ -403,7 +418,9 @@ export const Table = styled.table<StyledProps>`
   margin-left: ${(props) => props.$ml || "0"};
   margin-right: ${(props) => props.$mr || "0"};
   margin-bottom: ${(props) => props.$mb || "0"};
+  overflow-y: initial;
 `;
+
 export const Thead = styled.thead<StyledProps>`
   height: ${(props) => props.$h || "auto"};
   width: ${(props) => props.$w || "auto"};
@@ -415,6 +432,7 @@ export const Thead = styled.thead<StyledProps>`
   margin-bottom: ${(props) => props.$mb || "0"};
   background-color: ${(props) => props.$bg || ""};
 `;
+
 export const TBody = styled.tbody<StyledProps>`
   height: ${(props) => props.$h || "auto"};
   width: ${(props) => props.$w || "auto"};
@@ -427,6 +445,7 @@ export const TBody = styled.tbody<StyledProps>`
   background-color: ${(props) => props.$bg || ""};
   overflow: hidden;
 `;
+
 export const Tr = styled.tr<StyledProps>`
   height: ${(props) => props.$h || "auto"};
   color: ${(props) => props.$color || "black"};
@@ -440,6 +459,7 @@ export const Tr = styled.tr<StyledProps>`
   background-color: ${(props) => props.$bg || "#D9D9D9"};
   font-size: ${(props) => props.$size || "16px"};
 `;
+
 export const Th = styled.th<StyledProps>`
   height: ${(props) => props.$h || "auto"};
   width: ${(props) => props.$w || "auto"};
@@ -452,6 +472,7 @@ export const Th = styled.th<StyledProps>`
   background-color: ${(props) => props.$bg || ""};
   font-size: ${(props) => props.$size || "16px"};
 `;
+
 export const Td = styled.td<StyledProps>`
   display: ${(props) => props.$display};
   height: ${(props) => props.$h || "auto"};
@@ -473,6 +494,7 @@ export const Td = styled.td<StyledProps>`
   white-space: nowrap;
   overflow: hidden;
 `;
+
 export const Button = styled.button<StyledProps>`
   height: ${(props) => props.$h || "auto"};
   width: ${(props) => props.$w || "auto"};

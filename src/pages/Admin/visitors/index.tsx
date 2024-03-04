@@ -29,10 +29,12 @@ const VisitorsPage = () => {
     edit: false,
   });
   const [idEdit, setIdEdit] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getAllVisitors = async () => {
     API.get("visitor", CONFIGS).then((item): void => {
       setVisitors(item.data.visitantes);
+      setLoading(false);
     });
   };
 
@@ -61,7 +63,6 @@ const VisitorsPage = () => {
 
   return (
     <>
-    <div className="">
       <WrapContainer>
         <Box
           $dir="column"
@@ -69,8 +70,9 @@ const VisitorsPage = () => {
           $justify="baseline"
           $align="flex-start"
           $w="90%"
-          $h="90%"
+          $h="100%"
           $bg="white"
+          $overflow="scroll"
         >
           <Title $align="left" $color="black">
             Visitantes Cadastrados
@@ -81,6 +83,7 @@ const VisitorsPage = () => {
             </Title>
           </Box>
           <DataTable
+            loading={loading}
             edit={toogleEdit}
             deleteUser={deleteVisitor}
             header={header}
@@ -95,7 +98,6 @@ const VisitorsPage = () => {
         uptateVisitor={getAllVisitors}
         state={flags.edit}
       />
-    </div>
     </>
   );
 };

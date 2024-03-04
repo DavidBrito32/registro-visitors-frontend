@@ -15,6 +15,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import PDFDocument from "../../../components/PDFDocument";
 import { API } from "../../../services/API";
 import { CONFIGS } from "../../../services/axiosHeaders";
+import Loading from "../../../components/loading";
 export interface GenderDB {
   gender: string;
   total: number;
@@ -32,28 +33,37 @@ export interface ProfessionDB {
   total: number;
 }
 export interface ResultsDB {
-  gender: Array<GenderDB>,
-  city: Array<CityDB>,
-  state: Array<StateDB>,
-  profession: Array<ProfessionDB>
+  gender: Array<GenderDB>;
+  city: Array<CityDB>;
+  state: Array<StateDB>;
+  profession: Array<ProfessionDB>;
 }
 const ResumoPage = () => {
   const [dataRequest, setDataRequest] = useState<ResultsDB>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const Request = async () => {
-    const resultados = await API.get("/visitor/results", CONFIGS);
-    setDataRequest(await resultados.data);    
-  }
+    await API.get("/visitor/results", CONFIGS)
+      .then((item) => {
+        setDataRequest(item.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const labelCity = dataRequest?.city.map(item => item.city);
-  const dadosGender = dataRequest?.gender.map((item) => item.total)
-  const labelProfession = dataRequest?.profession.map((item) => item.profession)
-  const dataProfession = dataRequest?.profession.map((item) => item.total)
-  const labelState = dataRequest?.state.map((item) => item.state)
-  const dataState = dataRequest?.state.map((item) => item.total)
+  const labelCity = dataRequest?.city.map((item) => item.city);
+  const dadosGender = dataRequest?.gender.map((item) => item.total);
+  const labelProfession = dataRequest?.profession.map(
+    (item) => item.profession
+  );
+  const dataProfession = dataRequest?.profession.map((item) => item.total);
+  const labelState = dataRequest?.state.map((item) => item.state);
+  const dataState = dataRequest?.state.map((item) => item.total);
 
   const gender = {
-    labels: ['Masculino', 'Feminino', 'Outros'],
+    labels: ["Masculino", "Feminino", "Outros"],
     datasets: [
       {
         label: "Por Genero",
@@ -73,7 +83,7 @@ const ResumoPage = () => {
         borderWidth: 1,
       },
     ],
-  }
+  };
   const city = {
     labels: labelCity,
     datasets: [
@@ -95,7 +105,7 @@ const ResumoPage = () => {
         borderWidth: 1,
       },
     ],
-  }
+  };
   const profession = {
     labels: labelProfession,
     datasets: [
@@ -118,41 +128,41 @@ const ResumoPage = () => {
         borderWidth: 1,
       },
     ],
-  }
+  };
   const optionsProfession = {
     maintainAspectRatio: false,
     aspectRatio: 0.8,
     plugins: {
-        legend: {
-            labels: {
-                fontColor: "black"
-            }
-        }
+      legend: {
+        labels: {
+          fontColor: "black",
+        },
+      },
     },
     scales: {
-        x: {
-            ticks: {
-                color: "black",
-                font: {
-                    weight: 500
-                }
-            },
-            grid: {
-                display: false,
-                drawBorder: true
-            }
+      x: {
+        ticks: {
+          color: "black",
+          font: {
+            weight: 500,
+          },
         },
-        y: {
-            ticks: {
-                color: "black"
-            },
-            grid: {
-                color: "black",
-                drawBorder: true
-            }
-        }
-    }
-};
+        grid: {
+          display: false,
+          drawBorder: true,
+        },
+      },
+      y: {
+        ticks: {
+          color: "black",
+        },
+        grid: {
+          color: "black",
+          drawBorder: true,
+        },
+      },
+    },
+  };
   const state = {
     labels: labelState,
     datasets: [
@@ -174,46 +184,45 @@ const ResumoPage = () => {
         borderWidth: 1,
       },
     ],
-  }
+  };
   const optionsState = {
     maintainAspectRatio: false,
     aspectRatio: 0.8,
     plugins: {
-        tooltips: {
-            mode: 'index',
-            intersect: false
+      tooltips: {
+        mode: "index",
+        intersect: false,
+      },
+      legend: {
+        labels: {
+          color: "red",
         },
-        legend: {
-            labels: {
-                color: "red"
-            }
-        }
+      },
     },
     scales: {
-        x: {
-            stacked: true,
-            ticks: {
-                color: "black"
-            },
-            grid: {
-                color: "gray"
-            }
+      x: {
+        stacked: true,
+        ticks: {
+          color: "black",
         },
-        y: {
-            stacked: true,
-            ticks: {
-                color: "black"
-            },
-            grid: {
-                color: "black"
-            }
-        }
-    }
-};
-
+        grid: {
+          color: "gray",
+        },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          color: "black",
+        },
+        grid: {
+          color: "black",
+        },
+      },
+    },
+  };
 
   useEffect(() => {
-      Request();
+    Request();
   }, []);
   return (
     <>
@@ -221,15 +230,25 @@ const ResumoPage = () => {
         <Box $display="flex" $p="0 100px" $w="100%" $wrap="wrap">
           <Box $w="100%" $justify="space-between">
             <Text>Ver Relatorio Detalhado</Text>
-            <PDFDownloadLink document={<PDFDocument />}><Button $size="16px" $p="5px 15px" $radius="24px" $color="red">Download</Button></PDFDownloadLink>
-          </Box>  
+            <PDFDownloadLink document={<PDFDocument />}>
+              <Button $size="16px" $p="5px 15px" $radius="24px" $color="red">
+                Download
+              </Button>
+            </PDFDownloadLink>
+          </Box>
           <Grafic $justify="space-between" $radius="5px">
             <Beetween>
               <Title $color="black" $size="16px" $align="left">
-               Visitantes por Profissão
+                Visitantes por Profissão
               </Title>
             </Beetween>
-            <Box $h="100%" $p="05px 0" $w="100%" $justify="center" $align="center">
+            <Box
+              $h="100%"
+              $p="05px 0"
+              $w="100%"
+              $justify="center"
+              $align="center"
+            >
               <Chart
                 className=" h-full"
                 type="pie"
@@ -259,11 +278,11 @@ const ResumoPage = () => {
             </Title>
 
             <Chart
-                className="w-full h-full"
-                type="bar"
-                data={city}
-                options={{}}
-              />
+              className="w-full h-full"
+              type="bar"
+              data={city}
+              options={{}}
+            />
           </Grafic>
 
           <Grafic $radius="5px">
@@ -281,10 +300,11 @@ const ResumoPage = () => {
           </Grafic>
         </Box>
         <Overlay>
-            <Box>
-              <Title>BO da API</Title>
-            </Box>
+          <Box>
+            <Title>BO da API</Title>
+          </Box>
         </Overlay>
+        <Loading loading={loading} />
       </WrapContainer>
     </>
   );

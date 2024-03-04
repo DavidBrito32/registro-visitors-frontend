@@ -43,6 +43,7 @@ interface Props {
   visitante?: boolean;
   edit?: (id: string) => void;
   get?: () => Promise<void>;
+  loading: boolean;
 }
 
 interface Block {
@@ -58,6 +59,7 @@ const DataTable = ({
   visitante,
   edit,
   get,
+  loading,
 }: Props): JSX.Element => {
   const {
     register,
@@ -94,7 +96,6 @@ const DataTable = ({
   const [userIdToDelete, setUserIdToDelete] = useState<string>("");
   const [userIdTounlock, setUserIdToUnlock] = useState<string>("");
   const [userLock, setUserLock] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
 
   const toogleDeleteUser = async (id: string) => {
     setToogle(true);
@@ -131,8 +132,8 @@ const DataTable = ({
 
   return (
     <>
-      {body && (body.length === 0 || body?.length < 1) && <Loading loading={true} />}
-      <Table $w="100%">
+      {loading && <Loading loading={true} />}
+      <Table $w="100%" $h="10vh">
         <Thead $h="28px">
           <Tr $color={color} $bg={tableColor}>
             {header.map((item, index) => (

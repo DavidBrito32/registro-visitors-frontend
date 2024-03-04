@@ -29,7 +29,7 @@ interface Data {
 const AdminLayout = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [dados, setDados] = useState<Data>({name: "", role: "", email: ""});  
+  const [dados, setDados] = useState<Data>({ name: "", role: "", email: "" });
   const user = localStorage.getItem("usuario");
   const usuario: Data = user !== null && JSON.parse(user);
 
@@ -37,14 +37,14 @@ const AdminLayout = (): JSX.Element => {
     setDados({
       name: usuario && usuario.name,
       role: usuario && usuario.role,
-      email: usuario && usuario.email
-    })
+      email: usuario && usuario.email,
+    });
   }, []);
 
   const logout = () => {
     localStorage.clear();
     navigate("/");
-  }
+  };
 
   return (
     <>
@@ -53,7 +53,14 @@ const AdminLayout = (): JSX.Element => {
           <Logo src={Logomarca} alt="logomarca Museum" />
           <Box $dir="column">
             <Text>{dados.name}</Text>
-            <Button onClick={logout} $bg="green" $size="14px" $w="64px" $p="4px" $radius="24px">
+            <Button
+              onClick={logout}
+              $bg="green"
+              $size="14px"
+              $w="64px"
+              $p="4px"
+              $radius="24px"
+            >
               Sair
             </Button>
           </Box>

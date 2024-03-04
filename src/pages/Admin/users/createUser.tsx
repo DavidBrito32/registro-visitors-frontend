@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Sidebar } from "primereact/sidebar";
-import {
-  Button,
-  Form,
-  Input,
-  Label,
-  Text,
-} from "../../../styles/styles";
+import { Button, Form, Input, Label, Text } from "../../../styles/styles";
 import { useForm } from "react-hook-form";
 import { InputMask } from "primereact/inputmask";
 import { API } from "../../../services/API";
@@ -29,7 +23,13 @@ interface User {
   password: string;
 }
 
-const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) => {
+const CreateUser = ({
+  state,
+  toogle,
+  updateUsers,
+  retorno,
+  complete,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -43,7 +43,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
         reset();
         toogle();
         complete();
-        retorno(item.data)
+        retorno(item.data);
         updateUsers();
       })
       .catch((err) => {
@@ -63,7 +63,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
               <Text $color="black">Nome: </Text>
               {/*@ts-ignore */}
               <Input
-              $transform="none"
+                $transform="none"
                 $w="100%"
                 $border="2px solid pink"
                 placeholder="Digite o nome do usuario"
@@ -81,7 +81,7 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
               <Text $color="black">Email: </Text>
               {/*@ts-ignore */}
               <Input
-              $transform="none"
+                $transform="none"
                 $w="100%"
                 $border="2px solid pink"
                 placeholder="Digite o email do usuario"
@@ -98,27 +98,25 @@ const CreateUser = ({ state, toogle, updateUsers, retorno, complete }: Props) =>
                 placeholder="Informe seu CPF"
                 {...register("cpf", {
                   required: true,
+                  min: 14,
                 })}
               />
             </Label>
             <Label $w="100%">
               <Text $color="black">Cargo: </Text>
-              {/*@ts-ignore */}
-              <Input
-              $transform="none"
-                $w="100%"
-                $border="2px solid pink"
-                placeholder="Digite o cargo do usuario"
-                {...register("role", {
-                  required: true,
-                })}
-              />
+              <select 
+              className="w-full h-5 p-2 border-2 border-round-xs border-pink-500 "
+              {...register("role")}
+              >
+                <option value="Admin">Admin</option>
+                <option value="Operador">Operador</option>
+              </select>
             </Label>
             <Label $w="100%">
               <Text $color="black">Senha: </Text>
               {/*@ts-ignore */}
               <Input
-              $transform="none"
+                $transform="none"
                 $w="100%"
                 $border="2px solid pink"
                 placeholder="Digite o senha do usuario"

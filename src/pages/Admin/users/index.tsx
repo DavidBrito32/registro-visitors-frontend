@@ -27,11 +27,13 @@ const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [idUser, setIdUser] = useState<string>();
   const [retorno, setRetorno] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const header: Array<string> = ["Nome", "CPF", "E-mail","Cargo"];
 
   const getUsers = async () => {
     await API.get("users", CONFIGS).then((item) => {
       setUsers(item.data.usuarios);
+      setLoading(false);
     }).catch(err => {
       console.log(err)
     });
@@ -93,6 +95,7 @@ const UsersPage = () => {
               </Box>
           </Box>
           <DataTable
+            loading={loading}
             edit={toogleEdit}
             deleteUser={delUser}
             header={header}

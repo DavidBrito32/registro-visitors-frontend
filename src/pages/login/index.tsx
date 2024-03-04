@@ -11,11 +11,13 @@ import {
   Overlay,
   Text,
   Title,
+  Absolut,
 } from "../../styles/styles";
 import BG from "./assets/Piramide.jpg";
 import { useForm } from "react-hook-form";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface Login {
   email: string;
@@ -31,14 +33,20 @@ interface Message {
 
 const LoginPage = (): JSX.Element => {
   const { setState } = useContext(UserContext);
+  const [eye, setEye] = useState<boolean>(false);
   const [request, setRequest] = useState<Message>({
     message: "",
     status: "",
-    active: false
-  })
+    active: false,
+  });
   console.log(request);
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<Login>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Login>();
 
   const LoginData = async (data: Login): Promise<void> => {
     await API.post("users/auth/login", data)
@@ -47,11 +55,16 @@ const LoginPage = (): JSX.Element => {
         reset();
         localStorage.setItem("token", item.data.token);
         localStorage.setItem("usuario", JSON.stringify(item.data.usuario));
-        setRequest({...request, active: false});
+        setRequest({ ...request, active: false });
         navigate(item.data.route);
       })
       .catch((err) => {
-        setRequest({...request, message: err.response.data, status: "Acesso não autorizado", active: true})
+        setRequest({
+          ...request,
+          message: err.response.data,
+          status: "Acesso não autorizado",
+          active: true,
+        });
       });
   };
 
@@ -81,13 +94,14 @@ const LoginPage = (): JSX.Element => {
             <Text>Senha:</Text>
             {/* @ts-ignore */}
             <Input
-              type="text"
+              type={eye ? "text" : "password"}
               $transform="none"
               placeholder="informe sua senha:"
               {...register("password", {
                 required: true,
               })}
             />
+            <Absolut>{eye ? <FaEyeSlash className="cursor-pointer" onClick={() => setEye(!eye)} /> : <FaEye className="cursor-pointer" onClick={() => setEye(!eye)} />}</Absolut>
             {errors?.password?.type === "required" && (
               <p className="text-xl p-2 bg-red-300 border-round-lg text-white">
                 Senha não pode ficar em branco
@@ -118,10 +132,15 @@ const LoginPage = (): JSX.Element => {
             Entrar
           </Button>
         </Form>
-        <Overlay onClick={() => setRequest({...request, active: false})} className={request.active ? "active" : ""}>
+        <Overlay
+          onClick={() => setRequest({ ...request, active: false })}
+          className={request.active ? "active" : ""}
+        >
           <Box $p="30px 30px" $bg="white" $radius="12px" $dir="column">
             <Title $color="black">{request.status}</Title>
-            <Text $size="16px" $color="black">{request.message}</Text>
+            <Text $size="16px" $color="black">
+              {request.message}
+            </Text>
           </Box>
         </Overlay>
       </Container>

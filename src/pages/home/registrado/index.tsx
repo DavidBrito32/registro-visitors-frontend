@@ -44,8 +44,11 @@ const RegistedPage = (): JSX.Element => {
         }, 3000);
       })
       .catch((err) => {
-        setError(err.message);
-        navigate("/");
+        setError(err.response.data);
+        toogleModal();
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       });
   };
 

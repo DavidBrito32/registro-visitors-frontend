@@ -13,11 +13,13 @@ export interface BlockedVisitor {
 
 const BlockedPage = () => {
   const [data, setData] = useState<Array<BlockedVisitor>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getAllBlockedVisitor = async () => {
     await API.get("/visitor/blacklist", CONFIGS)
       .then((item) => {
         setData(item.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err.message);
@@ -55,6 +57,7 @@ const BlockedPage = () => {
             </Title>
           </Box>
           <DataTable
+            loading={loading}
             header={header}
             tableColor="purple"
             color={"white"}
