@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const API = axios.create({
-    baseURL: "http://localhost:3008/",
-    headers: {
-        "Content-Type": "application/json"
-    }
+  baseURL: "https://registro-visitors-backend.onrender.com/",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });

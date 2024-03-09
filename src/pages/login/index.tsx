@@ -39,7 +39,6 @@ const LoginPage = (): JSX.Element => {
     status: "",
     active: false,
   });
-  console.log(request);
   const navigate = useNavigate();
   const {
     register,
@@ -52,13 +51,15 @@ const LoginPage = (): JSX.Element => {
     await API.post("users/auth/login", data)
       .then((item) => {
         setState(item.data);
+        console.log(item);
         reset();
         localStorage.setItem("token", item.data.token);
         localStorage.setItem("usuario", JSON.stringify(item.data.usuario));
         setRequest({ ...request, active: false });
-        navigate(item.data.route);
+        navigate("/admin");
       })
       .catch((err) => {
+        console.log(err);
         setRequest({
           ...request,
           message: err.response.data,
@@ -101,7 +102,19 @@ const LoginPage = (): JSX.Element => {
                 required: true,
               })}
             />
-            <Absolut>{eye ? <FaEyeSlash className="cursor-pointer" onClick={() => setEye(!eye)} /> : <FaEye className="cursor-pointer" onClick={() => setEye(!eye)} />}</Absolut>
+            <Absolut>
+              {eye ? (
+                <FaEyeSlash
+                  className="cursor-pointer"
+                  onClick={() => setEye(!eye)}
+                />
+              ) : (
+                <FaEye
+                  className="cursor-pointer"
+                  onClick={() => setEye(!eye)}
+                />
+              )}
+            </Absolut>
             {errors?.password?.type === "required" && (
               <p className="text-xl p-2 bg-red-300 border-round-lg text-white">
                 Senha não pode ficar em branco

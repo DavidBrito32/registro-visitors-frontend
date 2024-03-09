@@ -251,7 +251,7 @@ const ResumoPage = () => {
             >
               <Chart
                 className=" h-full"
-                type="pie"
+                type="bar"
                 data={profession}
                 options={optionsProfession}
               />
