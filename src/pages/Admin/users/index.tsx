@@ -41,7 +41,7 @@ const UsersPage = () => {
 
   useEffect(() => {
       getUsers();
-  }, [users]);
+  }, []);
 
   const delUser = async (id: string): Promise<void> => {
     await API.delete(`users/auth/${id}`, CONFIGS)

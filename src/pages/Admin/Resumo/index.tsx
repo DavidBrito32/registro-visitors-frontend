@@ -230,7 +230,7 @@ const ResumoPage = () => {
         <Box $display="flex" $p="0 100px" $w="100%" $wrap="wrap">
           <Box $w="100%" $justify="space-between">
             <Text>Ver Relatorio Detalhado</Text>
-            <PDFDownloadLink document={<PDFDocument />}>
+            <PDFDownloadLink document={<PDFDocument />} fileName={`Registro de Visitantes - ${new Date().getDay()}`}>
               <Button $size="16px" $p="5px 15px" $radius="24px" $color="red">
                 Download
               </Button>

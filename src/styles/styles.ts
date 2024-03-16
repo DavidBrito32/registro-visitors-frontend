@@ -158,7 +158,7 @@ export const Form = styled.form<StyledProps>`
   align-items: ${(props) => props.$align || "center"};
   flex-wrap: wrap;
   gap: 18px;
-  background-color: ${(props) => props.$bg || "#B3B3B358"};
+  background-color: ${(props) => props.$bg || "#FFFFFF10"};
   backdrop-filter: blur(3px);
   border-radius: 22px;
 
@@ -209,7 +209,7 @@ export const Text = styled.p<StyledProps>`
   font-weight: bold;
 `;
 export const Input = styled.input<StyledProps>`
-  width: ${(props) => props.$w || "100%"};
+  width: ${(props) => props.$w || "calc(50% - 10px)"};
   height: ${(props) => props.$h || "50px"};
   border-radius: ${(props) => props.$radius || "8px"};
   border: none;
